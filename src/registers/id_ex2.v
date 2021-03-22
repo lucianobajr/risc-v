@@ -50,7 +50,7 @@ module id_ex2(
             instrout_1511   <= 0;
     end
 
-    always @(posedge clk ) begin
+    always @(posedge clock ) begin
         #1
         wb_ctlout <= ctlwb_out;
         m_ctlout <= ctlm_out;

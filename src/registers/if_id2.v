@@ -8,7 +8,7 @@ module if_id2 (clock, reset,instrout,npcout,instr,npc);
         npcout   <= 0;
     end
 
-    always  @(posedge clk)  begin
+    always  @(posedge clock)  begin
         if (!reset) begin
             instrout <= instr;
             npcout <= npc;
