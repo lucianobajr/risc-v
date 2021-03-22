@@ -29,11 +29,11 @@ module ex2 (
 );
     input wire regdst, alusrc;
     input wire [1:0] wb_ctl,aluop;
-	input wire [2:0]	m_ctl,
-	input wire [31:0]	npcout, rdata1, rdata2, s_extendout,
-	input wire [4:0]	instrout_2016, instrout_1511,
-	output	wire [1:0]	wb_ctlout,
-	output	wire zero,branch, memread, memwrite,
+	input wire [2:0]	m_ctl;
+	input wire [31:0]	npcout, rdata1, rdata2, s_extendout;
+	input wire [4:0]	instrout_2016, instrout_1511;
+	output	wire [1:0]	wb_ctlout;
+	output	wire zero,branch, memread, memwrite;
 	output	wire	[31:0]	EX_MEM_NPC,alu_result, rdata2out;
 	output	wire	[4:0]	five_bit_muxout;
 

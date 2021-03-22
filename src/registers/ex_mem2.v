@@ -25,7 +25,7 @@ module ex_mem2(
 	input wire [4:0] muxout;
 	output reg [1:0] wb_ctlout;
 	output reg branch, memread, memwrite;
-	output reg [31:0] add_result,
+	output reg [31:0] add_result;
 	output reg zero;
 	output reg [31:0] alu_result, rdata2out;
 	output reg [4:0] five_bit_muxout;

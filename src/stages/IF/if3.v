@@ -1,8 +1,5 @@
-`include "./util/mux2.v"
-`include "./util/pc.v"
 `include "./util/inst_memory.v"
 `include "./registers/if_id2.v"
-
 
 module if3 (
     exMemPc,
