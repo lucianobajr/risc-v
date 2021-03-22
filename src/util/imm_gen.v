@@ -22,7 +22,7 @@ endmodule
 
 
 module sign_extender(
-		input wire [14:0] unextended,
+		input wire [15:0] nextend,
 		output reg [31:0] extended
 		);
 
@@ -31,6 +31,6 @@ module sign_extender(
             // Replicate signed bit 16 times then concatinate
             // EX) {n {m}} , replicates m "n" times
             // EX) {4'b1001,4'b10x1} , becomes 100110x1   
-            extend <= {{15{unextend[14]}}, unextend};		
+            extended <= {{16{nextend[15]}}, nextend};		
         end
 endmodule

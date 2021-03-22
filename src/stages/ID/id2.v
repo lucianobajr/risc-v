@@ -41,8 +41,8 @@ npcout, readdata1out, readdata2out, sign_extendout, instrout_2021, instrout_1511
         .reset(1'b0)
     );
 
-    sign_extender s_extend(
-        .unextend(if_id_instruction_out[14:0]),
+    sign_extender signalextender(
+        .nextend(if_id_instruction_out[15:0]),
         .extended(sign_extendout)
     );
 
@@ -51,8 +51,8 @@ npcout, readdata1out, readdata2out, sign_extendout, instrout_2021, instrout_1511
         .ctlm_out(ctlm_out),
         .ctlex_out(ctlex_out),
         .npc(if_id_npc_out),
-        .readata1(readdata1),
-        .readata2(readdata2),
+        .readata1(read_data1),
+        .readata2(read_data2),
         .signext_out(signextendout),
         .instr_2021(if_id_instruction_out[20:16]),
         .instr_1511(if_id_instruction_out[15:11]),
