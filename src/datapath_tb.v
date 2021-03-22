@@ -5,18 +5,79 @@ module datapath_tb ();
 
     main Datapath(.clock(clock),.reset(reset));
 
-	always begin
-		clock = 1;#1;
-		clock = 0;#1;
-	end
-
 	initial begin
         $dumpfile("datapath.vcd");
         $dumpvars(0, datapath_tb);
         
         $display("Exibindo os resultados:");
        // $monitor("Instruction: %b\nExit PC: %b\nExit ALU: %b\n", );
-		reset<=1; #3;
-		reset<=0; #1;
+
+	end
+
+	initial begin
+		#1; clock = 0;
+		#1; clock = 1; reset = 1;
+		#1; clock = 0;
+		#1; clock = 1; reset = 0;
+		#1; clock = 0;
+		#1; clock = 1;
+		#1; clock = 0;
+		#1; clock = 1;
+		#1; clock = 0;
+		#1; clock = 1;
+		#1; clock = 0;
+		#1; clock = 1;
+		#1; clock = 0;
+		#1; clock = 1;
+		#1; clock = 0;
+		#1; clock = 1;
+		#1; clock = 0;
+		#1; clock = 1;
+		#1; clock = 0;
+		#1; clock = 1;
+		#1; clock = 0;
+		#1; clock = 1;
+		#1; clock = 0;
+		#1; clock = 1;
+		#1; clock = 0;
+		#1; clock = 1;
+		#1; clock = 0;
+		#1; clock = 1;
+		#1; clock = 0;
+		#1; clock = 1;
+		#1; clock = 0;
+		#1; clock = 1;
+		#1; clock = 0;
+		#1; clock = 1;
+		#1; clock = 0;
+		#1; clock = 1;
+		#1; clock = 0;
+		#1; clock = 1;
+		#1; clock = 0;
+		#1; clock = 1;
+		#1; clock = 0;
+		#1; clock = 1;
+		#1; clock = 0;
+		#1; clock = 1;
+		#1; clock = 0;
+		#1; clock = 1;
+		#1; clock = 0;
+		#1; clock = 1;
+		#1; clock = 0;
+		#1; clock = 1;
+		#1; clock = 0;
+		#1; clock = 1;
+		#1; clock = 0;
+		#1; clock = 1;
+		#1; clock = 0;
+		#1; clock = 1;
+		#1; clock = 0;
+		#1; clock = 1;
+		#1; clock = 0;
+		#1; clock = 1;
+		#1; clock = 0;
+		#1; clock = 1;
+		#1; clock = 0; reset = 0;
+		$finish;
 	end
 endmodule
