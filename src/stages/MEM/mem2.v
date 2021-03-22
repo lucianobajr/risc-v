@@ -38,11 +38,11 @@ module mem2(
     data_memory dm(
         .clock(1'b0),
         .reset(1'b0),
-        .mem_write(memWriteInput),
+        .mem_write(memwrite),
         .mem_read(dataMemoryOut),
-        .adress(aluInput),
-        .write_data(memWriteInput),
-        .result(aluOut)
+        .address(alu_result),
+        .write_data(rdata2out),
+        .result(read_data_in)
     );
     mem_wb2 mem_wb4( 
 		.control_wb_in(wb_ctlout),			// inputs

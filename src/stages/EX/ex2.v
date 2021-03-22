@@ -58,7 +58,7 @@ module ex2 (
     );
 
     alu ALU(.alu_control(control),.a(rdata1),.b(b),.alu_out(aluout),.zero(aluzero));
-    top_mux top_mux3(.a(s_extendout), .b(rdata2),.select(alusrc),.out(b));
+    top_mux top_mux3(.a(s_extendout), .b(rdata2),.sel(alusrc),.out(b));
     ex_mem2 ex_mem3(
         .ctlwb_out(wb_ctl),			
         .ctlm_out(m_ctl),
