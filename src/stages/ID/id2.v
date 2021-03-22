@@ -29,7 +29,7 @@ npcout, readdata1out, readdata2out, sign_extendout, instrout_2021, instrout_1511
         .wb(ctlwb_out)
     );    
 
-    registers reg(
+    registers registered(
         .writereg(mem_wb_regwrite),
         .writedata(wb_mux5_writedata),
         .rs1(if_id_instruction_out[19:15]), 
@@ -38,11 +38,11 @@ npcout, readdata1out, readdata2out, sign_extendout, instrout_2021, instrout_1511
         .readdata1(read_data1),
         .readdata2(read_data2),
         .clock(1'b0), 
-        .reset(1'b0),
+        .reset(1'b0)
     );
 
     sign_extender s_extend(
-        .unextend(if_id_instruction_out[14:0])
+        .unextend(if_id_instruction_out[14:0]),
         .extended(sign_extendout)
     );
 
