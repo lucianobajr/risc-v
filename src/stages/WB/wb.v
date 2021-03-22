@@ -1,34 +1,14 @@
+`include "./util/mux2.v"
 
 module wb (
-    signExtendReg,
-    writeRegIn,
-    rdIn,
-    sum,
-    extended,
-    writeRegOut,
-    rdOut,
-    result
+    mem_Read_data,
+	mem_ALU_result,
+	MemtoReg,
+	wb_data
 );
+    input wire MemtoReg;
+    input wire [31:0] mem_ALU_result,mem_Read_data;	
+	output wire [31:0] wb_data;
 
-    input wire signExtendReg,writeRegIn;
-    input wire [2:0] rdIn;
-    input wire [7:0] sum,extended;
-    output writeRegOut;
-    output [2:0] rdOut;
-    output [7:0] result; 
-
-    wire muxSelect;
-	wire [7:0] muxData0;
-	wire [7:0] muxData1;
-	wire [7:0] muxOut;
-
-	assign muxSelect = signExtendReg;	
-	assign muxData0 = sum;
-	assign muxData1 = extended;
-	
-	assign writeRegOut = writeRegIn;
-	assign rdOut = rdIn;
-	assign result = muxOut;
-	
-    mux2 m2(.data0(muxData0),.data1(muxData1),.select(muxSelect),.out(muxOut));
+    mux2 MUX2(.data0(mem_Read_data),.data1(mem_ALU_result),.select(MemtoReg),.out(wb_data));
 endmodule

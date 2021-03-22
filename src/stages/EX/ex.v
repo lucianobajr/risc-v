@@ -1,73 +1,82 @@
-`include "./util/imm_gen.v"
-`include "./tools/forward.v"
+`include "./util/pc.v"
+`include "./util/bottom_mux.v"
+`include "./util/alu_control.v"
+`include "./util/alu.v"
+`include "./util/top_mux.v"
+`include "./registers/ex_mem.v"
 
+module ex (
+    wb_ctl,  	
+	m_ctl,
+	regdst, 
+    alusrc,
+	aluop, 
+	npcout, 
+    rdata1, 
+    rdata2, 
+    s_extendout,
+	instrout_2016, 
+    instrout_1511,
+	wb_ctlout,
+	branch,
+    memread, 
+    memwrite,
+    memtoreg,
+	EX_MEM_NPC,
+	zero,
+	alu_result,
+    rdata2out,
+	five_bit_muxout
+);
+    input wire regdst, alusrc,memtoreg;
+    input wire [1:0] wb_ctl,aluop;
+	input wire [2:0]	m_ctl;
+	input wire [31:0]	npcout, rdata1, rdata2, s_extendout;
+	input wire [4:0]	instrout_2016, instrout_1511;
+	output	wire [1:0]	wb_ctlout;
+	output	wire zero,branch, memread, memwrite;
+	output	wire	[31:0]	EX_MEM_NPC,alu_result, rdata2out;
+	output	wire	[4:0]	five_bit_muxout;
 
-module ex ( signaltoReg_in, writeReg_in, id_ex_rs1, id_ex_rd, ex_wb_rd, data1, data2, forward_data, unextended, signaltoReg_out, writeReg_out, rd_out, sum, extensor);
-    input signaltoReg_in, writeReg_in;
-    input [2:0] id_ex_rd, id_ex_rs1, ex_wb_rd, unextended;
-    input [7:0] data1, data2, forward_data;
-    
-    output signaltoReg_out, writeReg_out;
-    output [2:0] rd_out;
-    output [7:0] sum, extensor;
+    wire [31:0]	adder_out, b, aluout;
+	wire [4:0]	muxout;
+	wire [3:0]	control;
+	wire aluzero;
 
-    // Fios para o mux 2 por 1 #1
-    wire mux2to1_1;
-    wire [7:0] mux2to1_d0_1;
-    wire [7:0] mux2to1_d1_1;
-    wire [7:0] mux2to1_out_1;
+    adder32 adder(
+        .operand1(npcout),
+        .operand2(s_extendout),
+        .sum(adder_out)
+	);
 
-    // Fios para o mux 2 por 1 #2
-    wire mux2to1_2;
-    wire [7:0] mux2to1_d0_2;
-    wire [7:0] mux2to1_d1_2;
-    wire [7:0] mux2to1_out_2;
+    bottom_mux bottomMux(.a(instrout_1511),.b(instrout_2016),.sel(regdst),.out(muxout));
 
-    wire [7:0] add_operador1;
-    wire [7:0] add_operador2;
-    wire [7:0] adder_sum;
+    alu_control aluControl(
+        .funct7(s_extendout[31:25]),
+        .funct3(s_extendout[14:12]),
+        .alu_operation(aluop),
+        .alu_ctr(control)
+    );
 
-    wire [2:0] sign_unextend;
-    wire [7:0] sign_extend;
-
-    wire [2:0] forward_id_ex_rs1;
-    wire [2:0] forward_id_ex_rd;
-    wire [2:0] forward_ex_wb_rd;
-    wire forwardA;
-    wire forwardB;
-
-    wire [4:0] aluControl;
-
-    // Ligando fios a algumas entradas
-    assign forward_id_ex_rs1 = id_ex_rs1;
-    assign forward_id_ex_rd = id_ex_rd;
-    assign forward_ex_wb_rd = ex_wb_rd;
-    assign mux2to1_d0_1 = data1;
-    assign mux2to1_d1_1 = forward_data;
-    assign mux2to1_d0_2 = data2;
-    assign mux2to1_d1_2 = forward_data;
-    assign sign_unextend = unextended; 
-
-    // Ligando fios a algumas saidas
-    assign signaltoReg_out = signaltoReg_in;
-    assign writeReg_out = writeReg_in;
-    assign rd_out = id_ex_rd;
-    assign sum = adder_sum;
-    assign extensor = sign_extend;
-
-    assign mux2to1_1 = forwardA;
-    assign mux2to1_2 = forwardB;
-
-    assign add_operador1 = mux2to1_out_1;
-    assign add_operador2 = mux2to1_out_2;
-
-    mux2 Mux2to1_1(.data0(mux2to1_d0_1), .data1(mux2to1_d1_1), .select(mux2to1_1), .out(mux2to1_out_1));
-
-    mux2 Mux2to1_2(.data0(mux2to1_d0_2), .data1(mux2to1_d1_2), .select(mux2to1_2), .out(mux2to1_out_2));
-
-    adder ADDER(.operand1(add_operador1), .operand2(add_operador2), .sum(adder_sum));
-
-    sign_extender Extend(.unextended(sign_unextend), .extended(sign_extend));
-
-    forward ForwardUnit(.idExRs1(forward_id_ex_rs1), .idExRd(forward_id_ex_rd), .exWbRd(forward_ex_wb_rd), .forwardA(forwardA), .forwardB(forwardB));
+    alu ALU(.alu_control(control),.a(rdata1),.b(b),.alu_out(aluout),.zero(aluzero));
+    top_mux top_mux3(.a(s_extendout), .b(rdata2),.sel(alusrc),.out(b));
+    ex_mem ex_mem3(
+        .ctlwb_out(wb_ctl),			
+        .ctlm_out(m_ctl),
+        .adder_out(adder_out),
+        .aluzero(aluzero),
+        .aluout(aluout), 
+        .readdat2(rdata2),
+        .muxout(muxout), 
+        .wb_ctlout(wb_ctlout),		
+        .branch(branch), 
+        .memread(memread), 
+        .memwrite(memwrite), 
+        .memtoreg(memToReg),
+        .add_result(EX_MEM_NPC),
+        .zero(zero),
+        .alu_result(alu_result), 
+        .rdata2out(rdata2out),
+        .five_bit_muxout(five_bit_muxout)
+    );
 endmodule

@@ -1,48 +1,32 @@
-module mem_wb (
-   clk,
-   reset,
-   stall,
-   flush,
-   memToRegInput,
-   regWriteInput,
-   dataMemoryInput,
-   aluInput,
-   regWriteAdressIn,
-   memToRegOut,
-   regWriteOut,
-   dataMemoryOut,
-   aluOut,
-   regWriteAdressOut
-);
-    input wire clk,reset,stall,flush,memToRegInput,regWriteInput;
-    input [4:0] regWriteAdressIn;
-    input [31:0] dataMemoryInput,aluInput;
+module mem_wb(
+        input wire clock, reset,    
+        input	wire	[1:0]	control_wb_in,
+        input	wire	[31:0]	read_data_in, alu_result_in,
+        input	wire	[4:0]	write_reg_in,
+        output	reg		regwrite, memtoreg, //1 bit wire
+        output	reg	[31:0]	read_data, mem_alu_result,
+        output	reg	[4:0]	mem_write_reg
+    );
 
-    output memToRegOut,regWriteOut;
-    output [4:0] regWriteAdressOut;
-    output [31:0] dataMemoryOut,aluOut;
-
-    always @(posedge clk ) begin
-       if (reset | flush) begin
-            memToRegOut <= 0;
-            regWriteOut <= 0;
-            dataMemoryOut <= 0;
-            aluOut <= 0;
-            regWriteAdressOut <= 0;
-       end 
-       else  if (stall) begin
-            memToRegOut <= memToRegOut;
-            regWriteOut <= regWriteOut;
-            dataMemoryOut <= dataMemoryOut;
-            aluOut <= aluOut;
-            regWriteAdressOut <= regWriteAdressOut;
-       end
-       else begin
-            memToRegOut <= memToRegInput;
-            regWriteOut <= regWriteInput;
-            dataMemoryOut <= dataMemoryInput;
-            aluOut <= aluInput;
-            regWriteAdressOut <= regWriteAdressIn;
-       end
+    initial begin
+        regwrite <= 0;
+        memtoreg <= 0;
+        
+        read_data <= 0;
+        mem_alu_result <= 0;
+        mem_write_reg <= 0;
+        
+        //finish this thread
     end
-endmodule
+
+    always@(posedge clock) begin
+        #1
+        regwrite <= control_wb_in[1]; // refer to Lab 2-2 Figure 2.2
+        memtoreg <= control_wb_in[0];
+        
+        read_data <= read_data_in;
+        mem_alu_result <= alu_result_in;
+        mem_write_reg <= write_reg_in;
+    end
+
+endmodule // mem_wb

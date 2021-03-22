@@ -1,35 +1,60 @@
 `include "./stages/MEM/data_memory.v"
+`include "./util/mux1.v"
+`include "./registers/mem_wb.v"
 
-module mem (
-   clk,
-   reset,
-   memToRegInput,
-   regWriteInput,
-   memWriteInput,
-   memReadInput,
-   aluInput,
-   memWriteDataInput,
-   regWriteAdressInput,
-   memToRegOut,
-   regWriteOut,
-   dataMemoryOut,
-   aluOut,
-   regWriteAdressOut
+module mem(
+    clock,
+    reset,
+    wb_ctlout,
+    branch, 
+    memread, 
+    memwrite,
+    zero,
+    alu_result, 
+    rdata2out,
+    five_bit_muxout,
+    MEM_PCSrc,
+    MEM_WB_regwrite, 
+    MEM_WB_memtoreg,
+    read_data, 
+    mem_alu_result,
+    mem_write_reg
 );
+    input wire	[1:0]	wb_ctlout;
+	input wire clock, reset, branch, memread, memwrite,zero;
+	input wire [31:0] alu_result, rdata2out;
+	input wire [4:0] five_bit_muxout;
+	output wire MEM_PCSrc,MEM_WB_regwrite, MEM_WB_memtoreg;
+	output wire	[31:0] read_data, mem_alu_result;
+	output wire	[4:0] mem_write_reg;
 
-    input wire clk,reset,memToRegInput,regWriteInput,memWriteInput,memReadInput;
-    input wire [4:0] regWriteAdressInput;
-    input wire [31:0] aluInput,memWriteDataInput;
-    
-    output memToRegOut,regWriteOut;
-    output [4:0] regWriteAdressOut;
-    output [31:0] dataMemoryOut,aluOut;
-    
-    assign aluOut = aluInput;
-    assign memToRegOut = memToRegInput;
-    assign regWriteOut =  regWriteInput;
-    assign regWriteAdressOut = regWriteAdressInput;
+    wire [31:0]	read_data_in;
 
 
-    data_memory dm(.clock(clk),.reset(reset),.mem_write(memWriteInput),.mem_read(dataMemoryOut),.adress(aluInput),.write_data(memWriteInput),.result(aluOut));
+    AND AND_4(
+		.A(branch), 
+		.B(zero),
+		.Exit(MEM_PCSrc)
+	);
+
+    data_memory dm(
+        .clock(clock),
+        .reset(reset),
+        .mem_write(memwrite),
+        .mem_read(dataMemoryOut),
+        .address(alu_result),
+        .write_data(rdata2out),
+        .result(read_data_in)
+    );
+    mem_wb mem_wb4( 
+		.control_wb_in(wb_ctlout),			// inputs
+		.read_data_in(read_data_in),
+		.alu_result_in(alu_result),
+		.write_reg_in(five_bit_muxout),
+		.regwrite(MEM_WB_regwrite),			//outputs
+		.memtoreg( MEM_WB_memtoreg),
+		.read_data(read_data),
+		.mem_alu_result(mem_alu_result),
+		.mem_write_reg(mem_write_reg)
+	);
 endmodule
