@@ -28,6 +28,7 @@ module instructionDecode (
     instrout_1511
 );
 
+
     input wire clock,reset;
     input wire [31:0] if_id_instruction_out, if_id_npc_out;
     input wire [4:0] mem_wb_rd;
