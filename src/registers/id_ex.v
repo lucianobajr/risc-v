@@ -26,7 +26,7 @@ module id_ex(
     instrout_2021,
     instrout_1511
 );
-    input wire clock,reset,branch,memread,memwrite;
+    input wire clock,reset,branch,memread,memwrite,memtoreg;
     input wire [1:0] ctlwb_out;
     input wire [2:0] ctlm_out;
     input wire [3:0] ctlex_out;

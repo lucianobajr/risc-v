@@ -17,7 +17,7 @@ module controller (
     output reg aluSrc; 
     output reg regWrite; 
     output reg [1:0] aluOp;
-    output reg RegDst;
+    output reg regDst;
 
 
     parameter R_Format = 7'b0110011;
@@ -36,7 +36,7 @@ module controller (
                     aluSrc = 1'b0;
                     regWrite = 1'b1;
                     aluOp = 2'b10;
-                    RegDst = 1'b1;
+                    regDst = 1'b1;
                 end
             LD:
                 begin
@@ -47,7 +47,7 @@ module controller (
                     aluSrc = 1'b1;
                     regWrite = 1'b1;
                     aluOp = 2'b00;
-                    RegDst = 1'b0;
+                    regDst = 1'b0;
                 end
             SD:
                 begin
@@ -58,7 +58,7 @@ module controller (
                     aluSrc = 1'b1;
                     regWrite = 1'b0;
                     aluOp = 2'b00;
-                    RegDst = 1'bx;
+                    regDst = 1'bx;
                 end
             BEQ:
                 begin
@@ -69,7 +69,7 @@ module controller (
                     aluSrc = 1'b0;
                     regWrite = 1'b0;
                     aluOp = 2'b01;
-                    RegDst = 1'bx;
+                    regDst = 1'bx;
                 end 
         endcase
     end
