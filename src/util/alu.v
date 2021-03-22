@@ -1,7 +1,7 @@
 module alu(alu_control,a,b,alu_out,zero);
     input [3:0] alu_control;
-    input [7:0] a,b;
-    output  reg [7:0] alu_out;
+    input [31:0] a,b;
+    output  reg [31:0] alu_out;
     output zero;
     assign zero = (alu_out == 0);
 
@@ -18,10 +18,10 @@ module alu(alu_control,a,b,alu_out,zero);
     end
         
     /* Function to signed operation*/
-    function [7:0] OUT;
-        input [7:0] a, b;
+    function [31:0] OUT;
+        input [31:0] a, b;
         begin
-        case(b[7])
+        case(b[31])
             1'b1:   begin
                 b = ~b;
                 b = b + 1'b1;

@@ -1,14 +1,14 @@
 module data_memory (
+    clock,
+    reset,
     mem_write, 
     mem_read, 
     address, 
     write_data, 
-    reset,
-    result, 
-    clock
+    result
 );
 
-input wire mem_write, mem_read, reset, clock;
+  input wire mem_write, mem_read, reset, clock;
   input wire [31:0]  address;
   input wire [31:0] write_data;
   output reg [31:0] result;

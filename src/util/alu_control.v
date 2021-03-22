@@ -1,4 +1,4 @@
-module alu_control(funct7,funct3,alu_operation,alu_ctr);
+    module alu_control(funct7,funct3,alu_operation,alu_ctr);
     input [6:0]funct7; // 7bits
     input [2:0]funct3; // 3bits
     input [1:0]alu_operation; //2bits

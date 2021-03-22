@@ -52,3 +52,12 @@ module adder(
 
 	assign sum = operand1 + operand2;
 endmodule
+
+ module adder32(
+    input [31:0] operand1,
+    input [31:0] operand2,
+    output [31:0] sum
+	);
+
+	assign sum = operand1 + operand2;
+endmodule
