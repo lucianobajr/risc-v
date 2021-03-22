@@ -1,4 +1,6 @@
 module ex_mem2(
+	clock,
+	reset,
 	ctlwb_out,
     ctlm_out,
     adder_out,
@@ -20,7 +22,7 @@ module ex_mem2(
     input wire [1:0] ctlwb_out;
 	input wire [2:0] ctlm_out;
 	input wire [31:0] adder_out;
-	input wire aluzero;
+	input wire aluzero, clock, reset;
 	input wire [31:0] aluout, readdat2;
 	input wire [4:0] muxout;
 	output reg [1:0] wb_ctlout;
@@ -39,7 +41,7 @@ module ex_mem2(
 		five_bit_muxout <= 0;
 	end
 
-	always@* begin
+	always@(posedge clock) begin
 		wb_ctlout <= ctlwb_out;
 		branch <= ctlm_out[2];    
 		memread <= ctlm_out[1];       

@@ -3,6 +3,8 @@
 `include "./registers/mem_wb2.v"
 
 module mem2(
+    clock,
+    reset,
     wb_ctlout,
     branch, 
     memread, 
@@ -19,7 +21,7 @@ module mem2(
     mem_write_reg
 );
     input wire	[1:0]	wb_ctlout;
-	input wire branch, memread, memwrite,zero;
+	input wire clock, reset, branch, memread, memwrite,zero;
 	input wire [31:0] alu_result, rdata2out;
 	input wire [4:0] five_bit_muxout;
 	output wire MEM_PCSrc,MEM_WB_regwrite, MEM_WB_memtoreg;
@@ -36,8 +38,8 @@ module mem2(
 	);
 
     data_memory dm(
-        .clock(1'b0),
-        .reset(1'b0),
+        .clock(clock),
+        .reset(reset),
         .mem_write(memwrite),
         .mem_read(dataMemoryOut),
         .address(alu_result),

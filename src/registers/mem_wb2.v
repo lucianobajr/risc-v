@@ -1,4 +1,5 @@
 module mem_wb2(
+        input wire clock, reset,    
         input	wire	[1:0]	control_wb_in,
         input	wire	[31:0]	read_data_in, alu_result_in,
         input	wire	[4:0]	write_reg_in,
@@ -18,7 +19,7 @@ module mem_wb2(
         //finish this thread
     end
 
-    always@* begin
+    always@(posedge clock) begin
         #1
         regwrite <= control_wb_in[1]; // refer to Lab 2-2 Figure 2.2
         memtoreg <= control_wb_in[0];
