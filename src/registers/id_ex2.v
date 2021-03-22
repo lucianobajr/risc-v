@@ -1,4 +1,6 @@
 module id_ex2(
+    clock,
+    reset,
     ctlwb_out,
     ctlm_out,
     ctlex_out,
@@ -20,7 +22,7 @@ module id_ex2(
     instrout_2021,
     instrout_1511
 );
-
+    input wire clock,reset;
     input wire [1:0] ctlwb_out;
     input wire [2:0] ctlm_out;
     input wire [3:0] ctlex_out;
@@ -34,7 +36,7 @@ module id_ex2(
     output reg [31:0] npcout, rdata1out, rdata2out, sign_extendout;
     output reg [4:0] instrout_2021, instrout_1511;
     
-    initial begin
+    initial  @(posedge reset) begin
             wb_ctlout       <= 0;
             m_ctlout        <= 0;
             regdst          <= 0;
@@ -48,7 +50,7 @@ module id_ex2(
             instrout_1511   <= 0;
     end
 
-    always @* begin
+    always @(posedge clk ) begin
         #1
         wb_ctlout <= ctlwb_out;
         m_ctlout <= ctlm_out;

@@ -1,14 +1,17 @@
-module if_id2 (instrout,npcout,instr,npc);
+module if_id2 (clock, reset,instrout,npcout,instr,npc);
+    input wire clock,reset;
     output reg [31:0] instrout,npcout;     
     input wire [31:0] instr,npc;
 
-    initial begin
+    initial @(posedge reset)  begin
         instrout <= 0;
         npcout   <= 0;
     end
 
-    always @* begin
-        #1 instrout <= instr;
-        npcout <= npc;
+    always  @(posedge clk)  begin
+        if (!reset) begin
+            instrout <= instr;
+            npcout <= npc;
+        end
     end
 endmodule

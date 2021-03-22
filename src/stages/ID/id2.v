@@ -3,9 +3,28 @@
 `include "./util/imm_gen.v"
 `include "./registers/id_ex2.v"
 
-module instructionDecode (if_id_instruction_out, if_id_npc_out, mem_wb_rd, mem_wb_regwrite, wb_mux5_writedata, wb_ctlout, m_ctlout, regdst, alusrc, aluop,
-npcout, readdata1out, readdata2out, sign_extendout, instrout_2021, instrout_1511);
+module instructionDecode (
+    clock,
+    reset,
+    if_id_instruction_out,
+    if_id_npc_out,
+    mem_wb_rd,
+    mem_wb_regwrite,
+    wb_mux5_writedata,
+    wb_ctlout,
+    m_ctlout,
+    regdst,
+    alusrc,
+    aluop, 
+    npcout,
+    readdata1out,
+    readdata2out,
+    sign_extendout,
+    instrout_2021,
+    instrout_1511
+);
 
+    input wire clock,reset;
     input wire [31:0] if_id_instruction_out, if_id_npc_out;
     input wire [4:0] mem_wb_rd;
     input wire mem_wb_regwrite;
@@ -37,8 +56,8 @@ npcout, readdata1out, readdata2out, sign_extendout, instrout_2021, instrout_1511
         .rd(mem_wb_rd),
         .readdata1(read_data1),
         .readdata2(read_data2),
-        .clock(1'b0), 
-        .reset(1'b0)
+        .clock(clock), 
+        .reset(reset)
     );
 
     sign_extender signalextender(
@@ -47,6 +66,8 @@ npcout, readdata1out, readdata2out, sign_extendout, instrout_2021, instrout_1511
     );
 
     id_ex2 idex2(
+        .clock(clock),
+        .reset(reset),
         .ctlwb_out(ctlwb_out),
         .ctlm_out(ctlm_out),
         .ctlex_out(ctlex_out),
@@ -68,6 +89,4 @@ npcout, readdata1out, readdata2out, sign_extendout, instrout_2021, instrout_1511
         .instrout_2021(instrout_2021),
         .instrout_1511(instrout_1511)
     );
-
-
 endmodule

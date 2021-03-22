@@ -17,7 +17,7 @@ module id (
     data2,
     unextended
 );
-
+    input wire clk,reset;
     input wire clock,reset,signExtendRegIn,writeRegIn,writeReg;
     input wire [2:0] rdIn;
     input wire [7:0] instruction,writeData;

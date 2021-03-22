@@ -9,7 +9,10 @@ module main2 ();
     wire EX_MEM_PCSrc;		// reg from I_Fetch to Execute
     wire [31:0] EX_MEM_NPC; 	// reg from I_Fetch to Decode
 
+	input wire clock,reset; 
+
     if3 I_FETCH1(
+		.clock(clock),
         .exMemPc(EX_MEM_PCSrc),	//inputs
         .exMemIn(EX_MEM_NPC), 
 		.ifIdInstruction(IF_ID_instr), 	//outputs
