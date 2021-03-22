@@ -10,13 +10,13 @@ module registers(
     reset
 );
   input writereg,clock,reset;
-  input [7:0] writedata;
-  input [2:0] rs1; 
-  input [2:0] rs2;
-  input [2:0] rd;
+  input [31:0] writedata;
+  input [4:0] rs1; //rt[19:15]
+  input [4:0] rs2; //rs[24:20]
+  input [4:0] rd;
 
-  output reg [7:0] readdata1;
-  output reg [7:0] readdata2;
+  output reg [31:0] readdata1;
+  output reg [31:0] readdata2;
   reg [63:0] array [31:0];
 
   integer i;
