@@ -1,5 +1,5 @@
-`include "control.v"
-`include "registers.v"
+`include "./stages/ID/control.v"
+`include "./stages/ID/registers.v"
 `include "./util/imm_gen.v"
 `include "./registers/id_ex2.v"
 

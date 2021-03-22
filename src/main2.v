@@ -1,14 +1,19 @@
+`include "./stages/IF/if3.v"
+`include "./stages/ID/id2.v"
+`include "./stages/EX/ex2.v"
+`include "./stages/MEM/mem2.v"
+`include "./stages/WB/wb2.v"
 
 module main2 ();
     wire [31:0] IF_ID_instr, IF_ID_npc;
     wire EX_MEM_PCSrc;		// reg from I_Fetch to Execute
     wire [31:0] EX_MEM_NPC; 	// reg from I_Fetch to Decode
 
-    I_FETCH I_FETCH1(
-        .EX_MEM_PCSrc(EX_MEM_PCSrc),	//inputs
-        .EX_MEM_NPC(EX_MEM_NPC), 
-		.IF_ID_instr(IF_ID_instr), 	//outputs
-        .IF_ID_npc(IF_ID_npc)	 
+    if3 I_FETCH1(
+        .exMemPc(EX_MEM_PCSrc),	//inputs
+        .exMemIn(EX_MEM_NPC), 
+		.ifIdInstruction(IF_ID_instr), 	//outputs
+        .ifIdIn(IF_ID_npc)	 
 	);
 	//connects between the I_FETCH and I_DECODE modules
 
@@ -23,22 +28,22 @@ module main2 ();
 	wire 	[31:0]	npcout, rdata1out, rdata2out, s_extendout;	//outputs of the ID/EX pipeline register
 	wire 	[4:0]	instrout_2016, instrout_1511; 			//outputs of the ID/EX pipeline register
 	
-	IDECODE I_DECODE2(
-		.IF_ID_instrout(IF_ID_instr),		//inputs
-		.IF_ID_npcout(IF_ID_npc),
-		.MEM_WB_rd(MEM_WB_rd),			//from MEM/WB of MEMORY
-		.MEM_WB_regwrite(MEM_WB_regwrite), 		
-		.WB_mux5_writedata(WB_mux5_writedata),	//from WB_mux of Write-Back
+	instructionDecode I_DECODE2(
+		.if_id_instruction_out(IF_ID_instr),		//inputs
+		.if_id_npc_out(IF_ID_npc),
+		.mem_wb_rd(MEM_WB_rd),			//from MEM/WB of MEMORY
+		.mem_wb_regwrite(MEM_WB_regwrite), 		
+		.wb_mux5_writedata(WB_mux5_writedata),	//from WB_mux of Write-Back
 		.wb_ctlout(wb_ctlout),			//outputs
 		.m_ctlout(m_ctlout),
 		.regdst(regdst),
 		.alusrc(alusrc),
 		.aluop(aluop),
 		.npcout(npcout),
-		.rdata1out(rdata1out),
-		.rdata2out(rdata2out),
-		.s_extendout(s_extendout),
-		.instrout_2016(instrout_2016),
+		.readdata1out(rdata1out),
+		.readdata2out(rdata2out),
+		.sign_extendout(s_extendout),
+		.instrout_2021(instrout_2016),
 		.instrout_1511(instrout_1511)
 		);
 	// "Internal" wires for Execute to connect to other Stages
@@ -48,7 +53,7 @@ module main2 ();
 	wire	[31:0]	alu_result, rdata2out_pipe;
 	wire	[4:0]	five_bit_muxout;
 		
-	EXECUTE EXECUTE3(
+	ex2 EXECUTE3(
 		.wb_ctl(wb_ctlout),  		//11 inputs, based off of outputs of ID/EX latch (Lab 2-2)
 		.m_ctl(m_ctlout),
 		.regdst(regdst), 
@@ -74,7 +79,7 @@ module main2 ();
 	wire		MEM_WB_memtoreg;
 	wire	[31:0]	read_data, mem_alu_result;
 	
-	MEMORY MEMORY4(
+	mem2 MEMORY4(
 		.wb_ctlout(wb_ctlout_pipe),		//inputs
 		.branch(branch), 
 		.memread(memread), 
@@ -91,7 +96,7 @@ module main2 ();
 		.mem_write_reg(MEM_WB_rd) 		//goes to DECODE register module, MEM_WB_rd
 		);  
 						
-	WB WB5(
+	wb2 WB5(
 		.mem_Read_data(read_data),		// inputs
 		.mem_ALU_result(mem_alu_result),
 		.MemtoReg(MEM_WB_memtoreg),
