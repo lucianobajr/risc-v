@@ -70,7 +70,6 @@ module main (clock,reset);
 		.regdst(regdst), 
 		.alusrc(alusrc),
 		.aluop(aluop), 
-		.memtoreg(memToReg),
 		.npcout(npcout), 
 		.rdata1(rdata1out), 
 		.rdata2(rdata2out), 
@@ -78,10 +77,6 @@ module main (clock,reset);
 		.instrout_2016(instrout_2016), 
 		.instrout_1511(instrout_1511),
 		.wb_ctlout(wb_ctlout_pipe),	//9 total outputs from EX/MEM latch (Lab 3-2)
-		.branch(branch), 
-		.memread(memread), 
-		.memwrite(memwrite),
-		.memtoreg(memToReg),
 		.EX_MEM_NPC(EX_MEM_NPC), 	// add_result in Lab 3-5, said to go to IF_MUX
 		.zero(zero),
 		.alu_result(alu_result), 

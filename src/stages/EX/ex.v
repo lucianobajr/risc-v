@@ -21,14 +21,13 @@ module ex (
 	branch,
     memread, 
     memwrite,
-    memtoreg,
 	EX_MEM_NPC,
 	zero,
 	alu_result,
     rdata2out,
 	five_bit_muxout
 );
-    input wire regdst, alusrc,memtoreg;
+    input wire regdst, alusrc;
     input wire [1:0] wb_ctl,aluop;
 	input wire [2:0]	m_ctl;
 	input wire [31:0]	npcout, rdata1, rdata2, s_extendout;
@@ -72,7 +71,6 @@ module ex (
         .branch(branch), 
         .memread(memread), 
         .memwrite(memwrite), 
-        .memtoreg(memToReg),
         .add_result(EX_MEM_NPC),
         .zero(zero),
         .alu_result(alu_result), 

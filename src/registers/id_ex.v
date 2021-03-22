@@ -41,10 +41,6 @@ module id_ex(
     output reg [4:0] instrout_2021, instrout_1511;
     
     initial  @(posedge reset) begin
-            branch          <= 0;
-            memread         <= 0;
-            memwrite        <= 0;
-            memtoreg        <= 0;
             wb_ctlout       <= 0;
             m_ctlout        <= 0;
             regdst          <= 0;
@@ -63,10 +59,6 @@ module id_ex(
         wb_ctlout <= ctlwb_out;
         m_ctlout <= ctlm_out;
         regdst <= ctlex_out[3];
-        branch <= branch;
-        memread <= memread;
-        memwrite <= memwrite;
-        memtoreg <= memtoreg;
         aluop <= ctlex_out[2:1];
         alusrc <= ctlex_out[0];
         npcout <= npc;
