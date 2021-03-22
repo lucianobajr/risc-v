@@ -9,7 +9,6 @@ module instructionDecode (
     if_id_instruction_out,
     if_id_npc_out,
     mem_wb_rd,
-    mem_wb_regwrite,
     branch,
     memread, 
 	memwrite,
@@ -32,7 +31,7 @@ module instructionDecode (
     input wire clock,reset;
     input wire [31:0] if_id_instruction_out, if_id_npc_out;
     input wire [4:0] mem_wb_rd;
-    input wire mem_wb_regwrite,branch, memread,memwrite,memtoreg;
+    input wire branch, memread,memwrite,memtoreg;
     input wire [31:0] wb_mux5_writedata;
     output wire [1:0] wb_ctlout;
     output wire [2:0] m_ctlout;
@@ -84,10 +83,6 @@ module instructionDecode (
         .npc(if_id_npc_out),
         .readata1(read_data1),
         .readata2(read_data2),
-        .branch(branch),
-        .memread(memread), 
-	    .memwrite(memwrite),
-        .memtoreg(memToReg),
         .signext_out(signextendout),
         .instr_2021(if_id_instruction_out[20:16]),
         .instr_1511(if_id_instruction_out[15:11]),

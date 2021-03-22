@@ -1,5 +1,5 @@
-module if_id (clock, reset,instrout,npcout,instr,npc,memtoreg);
-    input wire clock,reset,memtoreg;
+module if_id (clock, reset,instrout,npcout,instr,npc);
+    input wire clock,reset;
     output reg [31:0] instrout,npcout;     
     input wire [31:0] instr,npc;
 

@@ -10,13 +10,11 @@ module main (clock,reset);
     wire [31:0] EX_MEM_NPC; 	// reg from I_Fetch to Decode
 
 	input wire clock,reset; 
-	wire memToReg;
 
 
     intructionfetch I_FETCH1(
 		.clock(clock),
 		.reset(reset),
-		.memtoreg(memToReg),
         .exMemPc(EX_MEM_PCSrc),	//inputs
         .exMemIn(EX_MEM_NPC), 
 		.ifIdInstruction(IF_ID_instr), 	//outputs
@@ -30,7 +28,7 @@ module main (clock,reset);
 	wire 	[31:0]	WB_mux5_writedata;				//writedata input to register module
 	wire 	[1:0]	wb_ctlout; 					//output of control module (WB)
 	wire 	[2:0]	m_ctlout; 					//output of control module (M)
-	wire 		regdst; 					//output of control module (EX, regdst)
+	wire 		regdst, memToReg;					//output of control module (EX, regdst)
 	wire 		alusrc; 					//output of control module (EX, alusrc)
 	wire 	[1:0]	aluop; 						//output of control module (EX, aluop)
 	wire 	[31:0]	npcout, rdata1out, rdata2out, s_extendout;	//outputs of the ID/EX pipeline register
@@ -39,8 +37,7 @@ module main (clock,reset);
 	instructionDecode I_DECODE2(
 		.if_id_instruction_out(IF_ID_instr),		//inputs
 		.if_id_npc_out(IF_ID_npc),
-		.mem_wb_rd(MEM_WB_rd),			//from MEM/WB of MEMORY
-		.mem_wb_regwrite(MEM_WB_regwrite), 		
+		.mem_wb_rd(MEM_WB_rd),			//from MEM/WB of MEMORY		
 		.branch(branch),
 		.memread(memread), 
 		.memwrite(memwrite),
