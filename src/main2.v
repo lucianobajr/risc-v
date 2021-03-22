@@ -4,7 +4,7 @@
 `include "./stages/MEM/mem2.v"
 `include "./stages/WB/wb2.v"
 
-module main2 ();
+module main2 (clock,reset);
     wire [31:0] IF_ID_instr, IF_ID_npc;
     wire EX_MEM_PCSrc;		// reg from I_Fetch to Execute
     wire [31:0] EX_MEM_NPC; 	// reg from I_Fetch to Decode

@@ -1,7 +1,7 @@
 all:
 	iverilog datapath_tb.v -o datapath
 main2:
-	iverilog main2.v -o main
+	iverilog datapath_tb2.v -o datapath
 run: datapath
 	./datapath
 

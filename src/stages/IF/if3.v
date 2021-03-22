@@ -14,7 +14,6 @@ module if3 (
     input wire [31:0] exMemIn;
     output [31:0] ifIdIn,ifIdInstruction;
     
-
     wire [31:0] pc;
     wire [31:0] dataout;
     wire [31:0] in,muxOut;

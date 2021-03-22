@@ -51,8 +51,8 @@ module ex2 (
     bottom_mux bottomMux(.a(instrout_1511),.b(instrout_2016),.sel(regdst),.out(muxout));
 
     alu_control aluControl(
-        .funct7(s_extendout[6:0]),
-        .funct3(3'b000),
+        .funct7(s_extendout[31:25]),
+        .funct3(s_extendout[14:12]),
         .alu_operation(aluop),
         .alu_ctr(control)
     );
