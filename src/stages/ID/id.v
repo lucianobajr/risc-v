@@ -6,96 +6,96 @@
 module instructionDecode (
     clock,
     reset,
-    instrOutIfId,
-    pcOutIfId,
-    memWbRd,
+    if_id_instruction_out,
+    if_id_npc_out,
+    mem_wb_rd,
     branch,
     memread, 
 	memwrite,
     memtoreg,
-    writeDtMux5Wb, // dt = data
-    wbCtlOut,
-    mCtlOut,
+    wb_mux5_writedata,
+    wb_ctlout,
+    m_ctlout,
     regdst,
     alusrc,
     aluop, 
-    pcOut,
-    readData1Out,
-    readData2Out,
-    signExtendOut,
-    instrOut1,
-    instrOut2
+    npcout,
+    readdata1out,
+    readdata2out,
+    sign_extendout,
+    instrout_2021,
+    instrout_1511
 );
 
 
     input wire clock,reset;
-    input wire [31:0] instrOutIfId, pcOutIfId;
-    input wire [4:0] memWbRd;
+    input wire [31:0] if_id_instruction_out, if_id_npc_out;
+    input wire [4:0] mem_wb_rd;
     input wire branch, memread,memwrite,memtoreg;
-    input wire [31:0] writeDtMux5Wb;
-    output wire [1:0] wbCtlOut;
-    output wire [2:0] mCtlOut;
+    input wire [31:0] wb_mux5_writedata;
+    output wire [1:0] wb_ctlout;
+    output wire [2:0] m_ctlout;
     output wire regdst, alusrc;
     output wire [1:0] aluop;
-    output wire [31:0] pcOut, readData1Out, readData2Out, signExtendOut;
-    output wire [4:0] instrOut1, instrOut2;
+    output wire [31:0] npcout, readdata1out, readdata2out, sign_extendout;
+    output wire [4:0] instrout_2021, instrout_1511;
 
-    wire [3:0] ctlExOut;
-    wire [2:0] ctlMOut;
-    wire [1:0] ctlWbOut;
-    wire [31:0] readData1, readData2, extendOutSign;  
+    wire [3:0] ctlex_out;
+    wire [2:0] ctlm_out;
+    wire [1:0] ctlwb_out;
+    wire [31:0] read_data1, read_data2, signextendout;  
 
     controller control2( 
-        .opcode(instrOutIfId[6:0]),
+        .opcode(if_id_instruction_out[6:0]),
         .branch(branch), 
         .memRead(memread), 
         .memToReg(memtoreg), 
         .memWrite(memwrite), 
         .aluSrc(alusrc), 
-        .regWrite(memWbRd), 
+        .regWrite(mem_wb_regwrite), 
         .aluOp(aluop),
         .regDst(regdst)
     );
 
     registers registered(
-        .writereg(memWbRd),
-        .writedata(writeDtMux5Wb),
-        .rs1(instrOutIfId[19:15]), 
-        .rs2(instrOutIfId[24:20]),
-        .rd(memWbRd),
-        .readdata1(readData1),
-        .readdata2(readData2),
+        .writereg(mem_wb_regwrite),
+        .writedata(wb_mux5_writedata),
+        .rs1(if_id_instruction_out[19:15]), 
+        .rs2(if_id_instruction_out[24:20]),
+        .rd(mem_wb_rd),
+        .readdata1(read_data1),
+        .readdata2(read_data2),
         .clock(clock), 
         .reset(reset)
     );
 
     sign_extender signalextender(
-        .nextend(instrOutIfId[15:0]),
-        .extended(signExtendOut)
+        .nextend(if_id_instruction_out[15:0]),
+        .extended(sign_extendout)
     );
 
     id_ex idex2(
         .clock(clock),
         .reset(reset),
-        .ctlwb_out(ctlWbOut),
-        .ctlm_out(ctlMOut),
-        .ctlex_out(ctlExOut),
-        .npc(pcOutIfId),
-        .readata1(readData1),
-        .readata2(readData2),
-        .signext_out(extendOutSign),
-        .instr_2021(instrOutIfId[20:16]),
-        .instr_1511(instrOutIfId[15:11]),
-        .wb_ctlout(wbCtlOut),
-        .m_ctlout(mCtlOut),
+        .ctlwb_out(ctlwb_out),
+        .ctlm_out(ctlm_out),
+        .ctlex_out(ctlex_out),
+        .npc(if_id_npc_out),
+        .readata1(read_data1),
+        .readata2(read_data2),
+        .signext_out(signextendout),
+        .instr_2021(if_id_instruction_out[20:16]),
+        .instr_1511(if_id_instruction_out[15:11]),
+        .wb_ctlout(wb_ctlout),
+        .m_ctlout(m_ctlout),
         .regdst(regdst),
         .alusrc(alusrc),
         .aluop(aluop),
-        .npcout(pcOut),
-        .rdata1out(readData1Out),
-        .rdata2out(readData2Out),
-        .sign_extendout(signExtendOut),
-        .instrout_2021(instrOut1),
-        .instrout_1511(instrOut2)
+        .npcout(npcout),
+        .rdata1out(readdata1out),
+        .rdata2out(readdata2out),
+        .sign_extendout(sign_extendout),
+        .instrout_2021(instrout_2021),
+        .instrout_1511(instrout_1511)
     );
 endmodule
