@@ -2,18 +2,22 @@
 
 module datapath_tb ();
     reg clock, reset;
-
-    main Datapath(
+	reg [31:0] mem_alu_result,read_data,WB_mux5_writedata;
+    
+	main Datapath(
 		.clock(clock),
-		.reset(reset)
-		.);
+		.reset(reset),
+		.mem_alu_result(mem_alu_result),
+		.read_data(read_data),
+		.WB_mux5_writedata(WB_mux5_writedata)
+	);
 
 	initial begin
         $dumpfile("datapath.vcd");
-        $dumpvars(0, main);
+        $dumpvars(0, datapath_tb);
         
         $display("Exibindo os resultados:");
-        $monitor("Instruction: %b\nExit PC: %b\nExit ALU: %b\n", );
+        $monitor("READ DATA: %b\nExit ALU: %b\nExit WRITE DATA: %b\n",read_data,mem_alu_result, WB_mux5_writedata);
 
 	end
 

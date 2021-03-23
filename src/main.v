@@ -4,8 +4,10 @@
 `include "./stages/MEM/mem.v"
 `include "./stages/WB/wb.v"
 
-module main (clock,reset);
+module main (clock,reset,mem_alu_result,read_data,WB_mux5_writedata);
 	input wire clock,reset;
+	input wire [31:0] mem_alu_result,read_data,WB_mux5_writedata;
+
     wire EX_MEM_PCSrc;		
     wire [31:0] exMemPcIn,IF_ID_instr, IF_ID_npc; 	
 
@@ -22,7 +24,7 @@ module main (clock,reset);
 	wire [1:0] wb_ctlout,aluop; 	
 	wire [2:0] m_ctlout; 		
 	wire [4:0] MEM_WB_rd,instrout1, instrout2;			
-	wire [31:0]	WB_mux5_writedata,npcout, rdata1out, rdata2out, s_extendout;		
+	wire [31:0]	npcout, rdata1out, rdata2out, s_extendout;		
 	
 	instructionDecode I_DECODE2(
 		.if_id_instruction_out(IF_ID_instr),		
@@ -70,9 +72,7 @@ module main (clock,reset);
 		.rdata2out(rdata2out_pipe),
 		.five_bit_muxout(five_bit_muxout)
 	);  
-
-	wire [31:0]	read_data, mem_alu_result;
-	
+		
 	mem MEMORY4(
 		.wb_ctlout(wb_ctlout_pipe),		
 		.branch(branch), 
