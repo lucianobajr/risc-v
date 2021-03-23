@@ -40,8 +40,8 @@ module mem(
     data_memory dm(
         .clock(clock),
         .reset(reset),
-        .mem_write(memwrite),
-        .mem_read(dataMemoryOut),
+        .memwrite(memwrite),
+        .memread(memread),
         .address(alu_result),
         .write_data(rdata2out),
         .result(read_data_in)

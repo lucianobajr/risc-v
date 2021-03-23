@@ -10,5 +10,5 @@ module wb (
     input wire [31:0] mem_ALU_result,mem_Read_data;	
 	output wire [31:0] wb_data;
 
-    mux2 MUX2(.data0(mem_Read_data),.data1(mem_ALU_result),.select(MemtoReg),.out(wb_data));
+    mux2 MUX2(.data0(mem_ALU_result),.data1(mem_Read_data),.select(MemtoReg),.out(wb_data));
 endmodule

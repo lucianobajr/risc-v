@@ -1,14 +1,14 @@
 module data_memory (
     clock,
     reset,
-    mem_write, 
-    mem_read, 
+    memwrite, 
+    memread, 
     address, 
     write_data, 
     result
 );
 
-  input wire mem_write, mem_read, reset, clock;
+  input wire memwrite, memread, reset, clock;
   input wire [31:0]  address;
   input wire [31:0] write_data;
   output reg [31:0] result;
@@ -50,10 +50,10 @@ module data_memory (
       dataMemory[31] <= 32'd31;
     end
     else begin
-      if (mem_write) begin
+      if (memwrite) begin
         dataMemory[address] <= write_data;
       end
-      else if(mem_read) begin
+      else if(memread) begin
         result <= dataMemory[address];
       end
     end

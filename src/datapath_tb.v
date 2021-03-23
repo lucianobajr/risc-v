@@ -3,14 +3,17 @@
 module datapath_tb ();
     reg clock, reset;
 
-    main Datapath(.clock(clock),.reset(reset));
+    main Datapath(
+		.clock(clock),
+		.reset(reset)
+		.);
 
 	initial begin
         $dumpfile("datapath.vcd");
-        $dumpvars(0, datapath_tb);
+        $dumpvars(0, main);
         
         $display("Exibindo os resultados:");
-       // $monitor("Instruction: %b\nExit PC: %b\nExit ALU: %b\n", );
+        $monitor("Instruction: %b\nExit PC: %b\nExit ALU: %b\n", );
 
 	end
 
