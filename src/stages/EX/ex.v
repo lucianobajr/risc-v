@@ -30,17 +30,20 @@ module ex (
     input wire regdst, alusrc;
     input wire [1:0] wb_ctl,aluop;
 	input wire [2:0]	m_ctl;
-	input wire [31:0]	npcout, rdata1, rdata2, s_extendout;
 	input wire [4:0]	instrout_2016, instrout_1511;
-	output	wire [1:0]	wb_ctlout;
-	output	wire zero,branch, memread, memwrite;
-	output	wire	[31:0]	EX_MEM_NPC,alu_result, rdata2out;
-	output	wire	[4:0]	five_bit_muxout;
+    input wire [31:0]	npcout, rdata1, rdata2, s_extendout;
 
-    wire [31:0]	adder_out, b, aluout;
+	
+	output	wire zero,branch, memread, memwrite;
+    output	wire [1:0]	wb_ctlout;
+    output	wire	[4:0]	five_bit_muxout;
+	output	wire	[31:0]	EX_MEM_NPC,alu_result, rdata2out;
+	
+    wire aluzero;
+    wire [3:0]	control;
 	wire [4:0]	muxout;
-	wire [3:0]	control;
-	wire aluzero;
+	wire [31:0]	adder_out, b, aluout;
+	
 
     adder32 adder(
         .operand1(npcout),
