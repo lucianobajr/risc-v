@@ -1,67 +1,67 @@
 module id_ex(
     clock,
     reset,
-    ctlwb_out,
-    ctlm_out,
-    ctlex_out,
-    npc,
+    ctlWbOut,
+    ctlMOut,
+    ctlExOut,
+    pcIn,
     readata1,
     readata2,
-    signext_out,
-    instr_2021,
-    instr_1511,
-    wb_ctlout,
-    m_ctlout,
+    signextOut,
+    instr1,
+    instr2,
+    WbctlOut,
+    MctlOut,
     regdst,
     alusrc,
     aluop,
-    npcout,
+    pcOut,
     rdata1out,
     rdata2out,
-    sign_extendout,
-    instrout_2021,
-    instrout_1511
+    signExtendOut,
+    instrOut1,
+    instrOut2
 );
     input wire clock,reset;
-    input wire [1:0] ctlwb_out;
-    input wire [2:0] ctlm_out;
-    input wire [3:0] ctlex_out;
-    input wire [31:0] npc, readata1, readata2, signext_out;
-    input wire [4:0] instr_2021, instr_1511;
+    input wire [1:0] ctlWbOut;
+    input wire [2:0] ctlMOut;
+    input wire [3:0] ctlExOut;
+    input wire [31:0] pcIn, readata1, readata2, signextOut;
+    input wire [4:0] instr1, instr2;
     
-    output reg [1:0] wb_ctlout;
-    output reg [2:0] m_ctlout;
+    output reg [1:0] WbctlOut;
+    output reg [2:0] MctlOut;
     output reg regdst, alusrc;
     output reg [1:0] aluop;
-    output reg [31:0] npcout, rdata1out, rdata2out, sign_extendout;
-    output reg [4:0] instrout_2021, instrout_1511;
+    output reg [31:0] npcout, rdata1out, rdata2out, signExtendOut;
+    output reg [4:0] instrOut1, instrOut2;
     
     initial  @(posedge reset) begin
-            wb_ctlout       <= 0;
-            m_ctlout        <= 0;
+            WbctlOut       <= 0;
+            MctlOut        <= 0;
             regdst          <= 0;
             aluop           <= 0;
             alusrc          <= 0;
-            npcout          <= 0;
+            pcOut          <= 0;
             rdata1out       <= 0;
             rdata2out       <= 0;
-            sign_extendout  <= 0;
-            instrout_2021   <= 0;
-            instrout_1511   <= 0;
+            signExtendOut  <= 0;
+            instrOut1   <= 0;
+            instrOut2   <= 0;
     end
 
     always @(posedge clock ) begin
         #1
-        wb_ctlout <= ctlwb_out;
-        m_ctlout <= ctlm_out;
-        regdst <= ctlex_out[3];
-        aluop <= ctlex_out[2:1];
-        alusrc <= ctlex_out[0];
-        npcout <= npc;
+        WbctlOut <= ctlWbOut;
+        MctlOut <= ctlMOut;
+        regdst <= ctlExOut[3];
+        aluop <= ctlExOut[2:1];
+        alusrc <= ctlExOut[0];
+        pcOut <= pcIn;
         rdata1out <= readata1;
         rdata2out <= readata2;
-        sign_extendout <= signext_out;
-        instrout_2021 <= instrout_2021;
-        instrout_1511 <= instrout_1511;
+        signExtendOut <= signextOut;
+        instrOut1 <= instr1;
+        instrOut2 <= instr2;
     end
 endmodule
